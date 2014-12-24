@@ -1,0 +1,1538 @@
+Gateway combo ServerSocket
+Gateway combo Stream
+Stable Library
+=========================================
+Native lib Version = RXTX-2.1-7
+Java lib Version   = RXTX-2.1-7
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B2
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=01
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=00
+ozvcnt 25data=FE
+ozvcnt 26data=FF
+ozvcnt 27data=81
+ozvcnt 28data=FE
+ozvcnt 29data=FF
+ozvcnt 30data=81
+ozvcnt 31data=FE
+ozvcnt 32data=FF
+ozvcnt 33data=81
+ozvcnt 34data=FE
+ozvcnt 35data=FF
+ozvcnt 36data=81
+ozvcnt 37data=FE
+ozvcnt 38data=FF
+ozvcnt 39data=81
+ozvcnt 40data=FE
+ozvcnt 41data=FF
+ozvcnt 42data=81
+ozvcnt 43data=FE
+ozvcnt 44data=FF
+ozvcnt 45data=81
+ozvcnt 46data=73
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+Gateway write
+Gateway STX
+Gateway count=2 Data=10
+Gateway count=3 Data=01
+Gateway count=4 Data=00
+Gateway count=5 Data=03
+Gateway Error ETX 5
+021001000303
+
+1
+2
+ozvcnt 0data=FE
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B3
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=02
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=07
+ozvcnt 25data=55
+ozvcnt 26data=06
+ozvcnt 27data=BE
+ozvcnt 28data=54
+ozvcnt 29data=06
+ozvcnt 30data=BB
+ozvcnt 31data=53
+ozvcnt 32data=06
+ozvcnt 33data=B7
+ozvcnt 34data=60
+ozvcnt 35data=03
+ozvcnt 36data=B6
+ozvcnt 37data=68
+ozvcnt 38data=07
+ozvcnt 39data=B3
+ozvcnt 40data=52
+ozvcnt 41data=06
+ozvcnt 42data=B2
+ozvcnt 43data=57
+ozvcnt 44data=03
+ozvcnt 45data=A6
+ozvcnt 46data=0D
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0655,0654,0653,0360,0768,0652,0357
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0655,0654,0653,0360,0768,0652,0357&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B3
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=03
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=07
+ozvcnt 25data=55
+ozvcnt 26data=06
+ozvcnt 27data=BE
+ozvcnt 28data=54
+ozvcnt 29data=06
+ozvcnt 30data=BB
+ozvcnt 31data=53
+ozvcnt 32data=06
+ozvcnt 33data=B7
+ozvcnt 34data=60
+ozvcnt 35data=03
+ozvcnt 36data=B7
+ozvcnt 37data=68
+ozvcnt 38data=07
+ozvcnt 39data=B4
+ozvcnt 40data=52
+ozvcnt 41data=06
+ozvcnt 42data=B2
+ozvcnt 43data=57
+ozvcnt 44data=03
+ozvcnt 45data=A9
+ozvcnt 46data=05
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0655,0654,0653,0360,0768,0652,0357
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0655,0654,0653,0360,0768,0652,0357&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B3
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=04
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=55
+ozvcnt 26data=06
+ozvcnt 27data=BE
+ozvcnt 28data=54
+ozvcnt 29data=06
+ozvcnt 30data=BC
+ozvcnt 31data=53
+ozvcnt 32data=06
+ozvcnt 33data=B7
+ozvcnt 34data=60
+ozvcnt 35data=03
+ozvcnt 36data=B7
+ozvcnt 37data=68
+ozvcnt 38data=07
+ozvcnt 39data=B5
+ozvcnt 40data=52
+ozvcnt 41data=06
+ozvcnt 42data=B2
+ozvcnt 43data=57
+ozvcnt 44data=03
+ozvcnt 45data=A9
+ozvcnt 46data=0B
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0655,0654,0653,0360,0768,0652,0357
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0655,0654,0653,0360,0768,0652,0357&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=AF
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=05
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=55
+ozvcnt 26data=06
+ozvcnt 27data=BE
+ozvcnt 28data=54
+ozvcnt 29data=06
+ozvcnt 30data=BC
+ozvcnt 31data=53
+ozvcnt 32data=06
+ozvcnt 33data=B7
+ozvcnt 34data=60
+ozvcnt 35data=03
+ozvcnt 36data=B7
+ozvcnt 37data=68
+ozvcnt 38data=07
+ozvcnt 39data=B5
+ozvcnt 40data=52
+ozvcnt 41data=06
+ozvcnt 42data=B2
+ozvcnt 43data=57
+ozvcnt 44data=03
+ozvcnt 45data=A9
+ozvcnt 46data=16
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0655,0654,0653,0360,0768,0652,0357
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0655,0654,0653,0360,0768,0652,0357&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=A8
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=06
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=55
+ozvcnt 26data=06
+ozvcnt 27data=BE
+ozvcnt 28data=54
+ozvcnt 29data=06
+ozvcnt 30data=BC
+ozvcnt 31data=53
+ozvcnt 32data=06
+ozvcnt 33data=B7
+ozvcnt 34data=60
+ozvcnt 35data=03
+ozvcnt 36data=B7
+ozvcnt 37data=68
+ozvcnt 38data=07
+ozvcnt 39data=B4
+ozvcnt 40data=52
+ozvcnt 41data=06
+ozvcnt 42data=B3
+ozvcnt 43data=57
+ozvcnt 44data=03
+ozvcnt 45data=AA
+ozvcnt 46data=11
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0655,0654,0653,0360,0768,0652,0357
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0655,0654,0653,0360,0768,0652,0357&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B9
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=07
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=55
+ozvcnt 26data=06
+ozvcnt 27data=BD
+ozvcnt 28data=54
+ozvcnt 29data=06
+ozvcnt 30data=BB
+ozvcnt 31data=60
+ozvcnt 32data=03
+ozvcnt 33data=B7
+ozvcnt 34data=53
+ozvcnt 35data=06
+ozvcnt 36data=B6
+ozvcnt 37data=52
+ozvcnt 38data=06
+ozvcnt 39data=B2
+ozvcnt 40data=68
+ozvcnt 41data=07
+ozvcnt 42data=B2
+ozvcnt 43data=57
+ozvcnt 44data=03
+ozvcnt 45data=AB
+ozvcnt 46data=02
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0655,0654,0360,0653,0652,0768,0357
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0655,0654,0360,0653,0652,0768,0357&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B2
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=08
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=55
+ozvcnt 26data=06
+ozvcnt 27data=BA
+ozvcnt 28data=54
+ozvcnt 29data=06
+ozvcnt 30data=BA
+ozvcnt 31data=60
+ozvcnt 32data=03
+ozvcnt 33data=B8
+ozvcnt 34data=53
+ozvcnt 35data=06
+ozvcnt 36data=B5
+ozvcnt 37data=52
+ozvcnt 38data=06
+ozvcnt 39data=B3
+ozvcnt 40data=68
+ozvcnt 41data=07
+ozvcnt 42data=B3
+ozvcnt 43data=58
+ozvcnt 44data=03
+ozvcnt 45data=AB
+ozvcnt 46data=03
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0655,0654,0360,0653,0652,0768,0358
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0655,0654,0360,0653,0652,0768,0358&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B6
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=09
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=54
+ozvcnt 26data=06
+ozvcnt 27data=BA
+ozvcnt 28data=55
+ozvcnt 29data=06
+ozvcnt 30data=B9
+ozvcnt 31data=60
+ozvcnt 32data=03
+ozvcnt 33data=B9
+ozvcnt 34data=53
+ozvcnt 35data=06
+ozvcnt 36data=B5
+ozvcnt 37data=68
+ozvcnt 38data=07
+ozvcnt 39data=B3
+ozvcnt 40data=52
+ozvcnt 41data=06
+ozvcnt 42data=B2
+ozvcnt 43data=58
+ozvcnt 44data=03
+ozvcnt 45data=B0
+ozvcnt 46data=1E
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0654,0655,0360,0653,0768,0652,0358
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0654,0655,0360,0653,0768,0652,0358&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B6
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=0A
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=54
+ozvcnt 26data=06
+ozvcnt 27data=BB
+ozvcnt 28data=60
+ozvcnt 29data=03
+ozvcnt 30data=BA
+ozvcnt 31data=55
+ozvcnt 32data=06
+ozvcnt 33data=B7
+ozvcnt 34data=53
+ozvcnt 35data=06
+ozvcnt 36data=B4
+ozvcnt 37data=58
+ozvcnt 38data=03
+ozvcnt 39data=B4
+ozvcnt 40data=68
+ozvcnt 41data=07
+ozvcnt 42data=B4
+ozvcnt 43data=52
+ozvcnt 44data=06
+ozvcnt 45data=B2
+ozvcnt 46data=13
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0654,0360,0655,0653,0358,0768,0652
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0654,0360,0655,0653,0358,0768,0652&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B6
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=0B
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=54
+ozvcnt 26data=06
+ozvcnt 27data=BA
+ozvcnt 28data=60
+ozvcnt 29data=03
+ozvcnt 30data=BA
+ozvcnt 31data=55
+ozvcnt 32data=06
+ozvcnt 33data=B7
+ozvcnt 34data=58
+ozvcnt 35data=03
+ozvcnt 36data=B4
+ozvcnt 37data=68
+ozvcnt 38data=07
+ozvcnt 39data=B4
+ozvcnt 40data=53
+ozvcnt 41data=06
+ozvcnt 42data=B2
+ozvcnt 43data=52
+ozvcnt 44data=06
+ozvcnt 45data=B1
+ozvcnt 46data=16
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0654,0360,0655,0358,0768,0653,0652
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0654,0360,0655,0358,0768,0653,0652&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B7
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=0C
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=54
+ozvcnt 26data=06
+ozvcnt 27data=BB
+ozvcnt 28data=60
+ozvcnt 29data=03
+ozvcnt 30data=BB
+ozvcnt 31data=68
+ozvcnt 32data=07
+ozvcnt 33data=B8
+ozvcnt 34data=58
+ozvcnt 35data=03
+ozvcnt 36data=B6
+ozvcnt 37data=55
+ozvcnt 38data=06
+ozvcnt 39data=B6
+ozvcnt 40data=52
+ozvcnt 41data=06
+ozvcnt 42data=B2
+ozvcnt 43data=53
+ozvcnt 44data=06
+ozvcnt 45data=B1
+ozvcnt 46data=1F
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0654,0360,0768,0358,0655,0652,0653
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0654,0360,0768,0358,0655,0652,0653&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B8
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=0D
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=54
+ozvcnt 26data=06
+ozvcnt 27data=BD
+ozvcnt 28data=60
+ozvcnt 29data=03
+ozvcnt 30data=BB
+ozvcnt 31data=68
+ozvcnt 32data=07
+ozvcnt 33data=B8
+ozvcnt 34data=55
+ozvcnt 35data=06
+ozvcnt 36data=B7
+ozvcnt 37data=58
+ozvcnt 38data=03
+ozvcnt 39data=B5
+ozvcnt 40data=53
+ozvcnt 41data=06
+ozvcnt 42data=B1
+ozvcnt 43data=52
+ozvcnt 44data=06
+ozvcnt 45data=B0
+ozvcnt 46data=17
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0654,0360,0768,0655,0358,0653,0652
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0654,0360,0768,0655,0358,0653,0652&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B8
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=0E
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=54
+ozvcnt 26data=06
+ozvcnt 27data=BD
+ozvcnt 28data=60
+ozvcnt 29data=03
+ozvcnt 30data=BA
+ozvcnt 31data=68
+ozvcnt 32data=07
+ozvcnt 33data=B9
+ozvcnt 34data=55
+ozvcnt 35data=06
+ozvcnt 36data=B6
+ozvcnt 37data=58
+ozvcnt 38data=03
+ozvcnt 39data=B5
+ozvcnt 40data=53
+ozvcnt 41data=06
+ozvcnt 42data=B1
+ozvcnt 43data=52
+ozvcnt 44data=06
+ozvcnt 45data=B1
+ozvcnt 46data=14
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0654,0360,0768,0655,0358,0653,0652
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0654,0360,0768,0655,0358,0653,0652&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B6
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=0F
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=54
+ozvcnt 26data=06
+ozvcnt 27data=BD
+ozvcnt 28data=60
+ozvcnt 29data=03
+ozvcnt 30data=BA
+ozvcnt 31data=68
+ozvcnt 32data=07
+ozvcnt 33data=B9
+ozvcnt 34data=55
+ozvcnt 35data=06
+ozvcnt 36data=B6
+ozvcnt 37data=58
+ozvcnt 38data=03
+ozvcnt 39data=B5
+ozvcnt 40data=53
+ozvcnt 41data=06
+ozvcnt 42data=B0
+ozvcnt 43data=52
+ozvcnt 44data=06
+ozvcnt 45data=B0
+ozvcnt 46data=1B
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0654,0360,0768,0655,0358,0653,0652
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0654,0360,0768,0655,0358,0653,0652&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B8
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=10
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=54
+ozvcnt 26data=06
+ozvcnt 27data=BD
+ozvcnt 28data=60
+ozvcnt 29data=03
+ozvcnt 30data=BA
+ozvcnt 31data=68
+ozvcnt 32data=07
+ozvcnt 33data=B9
+ozvcnt 34data=58
+ozvcnt 35data=03
+ozvcnt 36data=B5
+ozvcnt 37data=55
+ozvcnt 38data=06
+ozvcnt 39data=B5
+ozvcnt 40data=52
+ozvcnt 41data=06
+ozvcnt 42data=B1
+ozvcnt 43data=53
+ozvcnt 44data=06
+ozvcnt 45data=B0
+ozvcnt 46data=08
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0654,0360,0768,0358,0655,0652,0653
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0654,0360,0768,0358,0655,0652,0653&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B5
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=11
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=54
+ozvcnt 26data=06
+ozvcnt 27data=BD
+ozvcnt 28data=60
+ozvcnt 29data=03
+ozvcnt 30data=BA
+ozvcnt 31data=68
+ozvcnt 32data=07
+ozvcnt 33data=B9
+ozvcnt 34data=58
+ozvcnt 35data=03
+ozvcnt 36data=B5
+ozvcnt 37data=55
+ozvcnt 38data=06
+ozvcnt 39data=B4
+ozvcnt 40data=52
+ozvcnt 41data=06
+ozvcnt 42data=B0
+ozvcnt 43data=53
+ozvcnt 44data=06
+ozvcnt 45data=AF
+ozvcnt 46data=1B
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0654,0360,0768,0358,0655,0652,0653
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0654,0360,0768,0358,0655,0652,0653&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B5
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=12
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=54
+ozvcnt 26data=06
+ozvcnt 27data=BD
+ozvcnt 28data=60
+ozvcnt 29data=03
+ozvcnt 30data=BA
+ozvcnt 31data=68
+ozvcnt 32data=07
+ozvcnt 33data=B9
+ozvcnt 34data=58
+ozvcnt 35data=03
+ozvcnt 36data=B6
+ozvcnt 37data=55
+ozvcnt 38data=06
+ozvcnt 39data=B3
+ozvcnt 40data=52
+ozvcnt 41data=06
+ozvcnt 42data=B0
+ozvcnt 43data=53
+ozvcnt 44data=06
+ozvcnt 45data=B0
+ozvcnt 46data=03
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0654,0360,0768,0358,0655,0652,0653
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0654,0360,0768,0358,0655,0652,0653&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B6
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=13
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=54
+ozvcnt 26data=06
+ozvcnt 27data=BD
+ozvcnt 28data=60
+ozvcnt 29data=03
+ozvcnt 30data=BA
+ozvcnt 31data=68
+ozvcnt 32data=07
+ozvcnt 33data=B9
+ozvcnt 34data=58
+ozvcnt 35data=03
+ozvcnt 36data=B6
+ozvcnt 37data=55
+ozvcnt 38data=06
+ozvcnt 39data=B3
+ozvcnt 40data=52
+ozvcnt 41data=06
+ozvcnt 42data=B0
+ozvcnt 43data=53
+ozvcnt 44data=06
+ozvcnt 45data=B0
+ozvcnt 46data=01
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0654,0360,0768,0358,0655,0652,0653
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0654,0360,0768,0358,0655,0652,0653&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B5
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=14
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=54
+ozvcnt 26data=06
+ozvcnt 27data=BD
+ozvcnt 28data=60
+ozvcnt 29data=03
+ozvcnt 30data=BA
+ozvcnt 31data=68
+ozvcnt 32data=07
+ozvcnt 33data=B9
+ozvcnt 34data=58
+ozvcnt 35data=03
+ozvcnt 36data=B6
+ozvcnt 37data=55
+ozvcnt 38data=06
+ozvcnt 39data=B3
+ozvcnt 40data=52
+ozvcnt 41data=06
+ozvcnt 42data=B1
+ozvcnt 43data=53
+ozvcnt 44data=06
+ozvcnt 45data=B1
+ozvcnt 46data=05
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0654,0360,0768,0358,0655,0652,0653
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0654,0360,0768,0358,0655,0652,0653&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B5
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=15
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=54
+ozvcnt 26data=06
+ozvcnt 27data=BD
+ozvcnt 28data=60
+ozvcnt 29data=03
+ozvcnt 30data=BA
+ozvcnt 31data=68
+ozvcnt 32data=07
+ozvcnt 33data=B9
+ozvcnt 34data=58
+ozvcnt 35data=03
+ozvcnt 36data=B6
+ozvcnt 37data=55
+ozvcnt 38data=06
+ozvcnt 39data=B3
+ozvcnt 40data=52
+ozvcnt 41data=06
+ozvcnt 42data=B1
+ozvcnt 43data=53
+ozvcnt 44data=06
+ozvcnt 45data=B1
+ozvcnt 46data=04
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0654,0360,0768,0358,0655,0652,0653
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0654,0360,0768,0358,0655,0652,0653&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
+1
+2
+ozvcnt 0data=FE
+4 binary OZV
+ozvcnt 1data=2A
+ozvcnt 2data=6A
+ozvcnt 3data=62
+ozvcnt 4data=02
+ozvcnt 5data=11
+ozvcnt 6data=B7
+ozvcnt 7data=26
+ozvcnt 8data=28
+ozvcnt 9data=16
+ozvcnt 10data=7F
+ozvcnt 11data=00
+ozvcnt 12data=00
+ozvcnt 13data=00
+ozvcnt 14data=00
+ozvcnt 15data=00
+ozvcnt 16data=00
+ozvcnt 17data=00
+ozvcnt 18data=00
+ozvcnt 19data=00
+ozvcnt 20data=00
+ozvcnt 21data=00
+ozvcnt 22data=00
+ozvcnt 23data=00
+ozvcnt 24data=08
+ozvcnt 25data=54
+ozvcnt 26data=06
+ozvcnt 27data=BE
+ozvcnt 28data=60
+ozvcnt 29data=03
+ozvcnt 30data=BA
+ozvcnt 31data=68
+ozvcnt 32data=07
+ozvcnt 33data=B8
+ozvcnt 34data=58
+ozvcnt 35data=03
+ozvcnt 36data=B6
+ozvcnt 37data=55
+ozvcnt 38data=06
+ozvcnt 39data=B4
+ozvcnt 40data=53
+ozvcnt 41data=06
+ozvcnt 42data=B2
+ozvcnt 43data=57
+ozvcnt 44data=03
+ozvcnt 45data=B0
+ozvcnt 46data=02
+Gateway Data finish cnt=46
+Gateway Data finish binary
+forest() bRssi.length=46
+Gateway forestData
+update
+u2
+u3
+u4
+u5
+o1
+strItemID=1102
+strAPID=0654,0360,0768,0358,0655,0653,0357
+strFloor=0
+strLat=0.0
+strLng=0.0
+Gateway x=1 y=1
+u6 ItemID=1102&APIDs=0654,0360,0768,0358,0655,0653,0357&RSSIs=99,-88,-10&x=1&y=1&oAcc=2&lat=0.0&lng=0.0&floor=0&iAcc=15.0&battery=0.5
+u7
+5
+6 end serialEvent
