@@ -3,12 +3,14 @@ package serial5;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
+import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -17,7 +19,11 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.StreamHandler;
 
+import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -26,8 +32,9 @@ public class Serial_Class extends Serial_Base {
 
 	 //=============================================================================
 	 //クラスのフィールド
-	 JComboBox com_combo;
-	 JComboBox baud_combo;
+	 JComboBox<String> com_combo;
+	 JComboBox<String> baud_combo;
+	 JComboBox<String> log_combo;
 	 JTextArea tx;
 	 JScrollPane scrollPane;
 
@@ -38,6 +45,10 @@ public class Serial_Class extends Serial_Base {
      Socket echoSocket = null;
      DataOutputStream os = null;
      BufferedReader is = null;
+
+     // ログ
+     private static Logger logger = Logger.getGlobal();
+     int iLoglevel = 2;
 
 	 //=============================================================================
 	 //コンストラクタ
@@ -53,7 +64,7 @@ public class Serial_Class extends Serial_Base {
 
 
 	  //COMポート用のコンボボックスを作成して、アイテムを入れておきます。
-	  com_combo = new JComboBox();
+	  com_combo = new JComboBox<String>();
 	  com_combo.addItem("COM1");
 	  com_combo.addItem("COM2");
 	  com_combo.addItem("COM3");
@@ -73,7 +84,7 @@ public class Serial_Class extends Serial_Base {
 
 
 	  //ボー・レート用のコンボボックスを作成して、アイテムを入れておきます。
-	  baud_combo = new JComboBox();
+	  baud_combo = new JComboBox<String>();
 	  baud_combo.addItem("4800");
 	  baud_combo.addItem("9600");
 	  baud_combo.addItem("19200");
@@ -87,30 +98,98 @@ public class Serial_Class extends Serial_Base {
 	  baud_combo.setSelectedItem("38400");
 
 
-	  // *** RSSIXYにあった関数を起動時に変更
+		  //ログ用のコンボボックスを作成して、アイテムを入れておきます。
+		  log_combo = new JComboBox<String>();
+		  log_combo.addItem("少ない 致命的エラーのみ");
+		  log_combo.addItem("普通 警告レベル");
+		  log_combo.addItem("多い 詳細情報");
 
-      System.out.println("Gateway combo ServerSocket");
-      // ポートを開く
-      try {
-          echoServer = new ServerSocket(10000);
-      }
-      catch (IOException e) {
-          System.out.println(e);
-      }
+		  // デフォルト
+		  log_combo.setSelectedItem("多い 詳細情報");
 
-      // クライアントからの要求を受けるソケットを開く
-      try {
-          clientSocket = echoServer.accept();
-          is = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-       //   os = new PrintStream(clientSocket.getOutputStream());
-             os = new DataOutputStream(clientSocket.getOutputStream());
-      }   catch (IOException e) {
-                 System.out.println(e);
-      }
-      System.out.println("Gateway combo Stream");
+		  log_combo.addActionListener(new logSelectAction());
+
+		  // log を標準出力へ
+		  // 参考　http://www.akirakoyasu.net/2011/11/06/finally-understood-java-util-logging/
+			iLoglevel = 2;
+		  logger.addHandler(new StreamHandler(){
+			    {
+			    	setOutputStream(System.out);
+			    //	setLevel(Level.INFO);  // 初期値
+			    }
+			});
+		  logger.setLevel(Level.INFO); // ここでしないと反映しない？
+			logger.setUseParentHandlers(false);
 
 	 }
 
+	 // ログ用コンボボックスの値を変更した時
+	 class logSelectAction extends AbstractAction {
+
+		 public void actionPerformed(ActionEvent e) {
+
+			 int iSel = log_combo.getSelectedIndex();
+
+			 switch(iSel){
+			 case 0: // 少ない
+				 logger.setLevel(Level.SEVERE);
+/*
+				 logger.addHandler(new StreamHandler(){
+					  {
+					    setLevel(Level.SEVERE);
+					  }
+					});
+*/
+				 iLoglevel = 0;
+				 break;
+			 case 1:
+				 logger.addHandler(new StreamHandler(){
+					  {
+					    setLevel(Level.WARNING);
+					  }
+					});
+				 iLoglevel = 1;
+				 break;
+
+			 case 2: // 多い
+				 logger.setLevel(Level.INFO);
+				 iLoglevel = 2;
+				 break;
+
+			default:
+				break;
+
+			 }
+
+			 System.out.println("iSel=" + iSel + " log level=" + iLoglevel +  " logger level=" + logger.getLevel() );
+		 }
+	 }
+	 //---- 学習器用のサーバー起動
+	 void forestServer()
+	 {
+		  // *** RSSIXYにあった関数を起動時に変更
+
+	      System.out.println("Gateway combo ServerSocket");
+	      // ポートを開く
+	      try {
+	          echoServer = new ServerSocket(10000);
+	      }
+	      catch (IOException e) {
+	          System.out.println(e);
+	      }
+
+	      // クライアントからの要求を受けるソケットを開く
+	      try {
+	          clientSocket = echoServer.accept();
+	          is = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+	       //   os = new PrintStream(clientSocket.getOutputStream());
+	             os = new DataOutputStream(clientSocket.getOutputStream());
+	      }   catch (IOException e) {
+	                 System.out.println(e);
+	      }
+	      System.out.println("Gateway combo Stream");
+
+	 }
 
 	 //=============================================================================
 	 //ポートオープンの関数
@@ -210,11 +289,16 @@ public class Serial_Class extends Serial_Base {
 				     {
 				    	 received_data = in.read();// 入力ストリームから読み込み
 
-						 System.out.println("ozvcnt "+ozvcnt+ "data=" + String.format("%02X", received_data)  );
+				    	 if (iLoglevel == 2 ) {
+				    		 logger.info("first="+first_byte+ " mode="+output_mode +
+								 " ozvcnt="+String.format("%02d", ozvcnt) + " data=" + String.format("%02X", received_data)  );
+				    	 }
 
 					     //文字無しの場合はすぐに抜けます。
 					     if(received_data == -1)
 					     {
+					    	 System.out.println("received_data -1");
+					    	 first_byte = 0;
 					    	  break;
 					     }
 
@@ -315,6 +399,7 @@ public class Serial_Class extends Serial_Base {
 
 
 				    }  catch(IOException ex){
+				    	first_byte = 0; // リセットする
 				    }
 			    }  //while()文ここまで。
 			} // ifここまで
@@ -580,11 +665,11 @@ public class Serial_Class extends Serial_Base {
 				 url = new URL("http://ricohintern2014.appspot.com/posupdate");
 
 				 // Proxy認証設定
-				 /*
+
 				 ProxyAuthenticator pa = new ProxyAuthenticator("http://proxy.ricoh.co.jp:8080/", "z00s108018", "ken@1126");
 
 				 Authenticator.setDefault(pa);
-		*/
+
 
 				 System.out.println("u3");
 
@@ -592,8 +677,8 @@ public class Serial_Class extends Serial_Base {
 				 try {
 						// 参考　http://www.freeshow.net.cn/ja/questions/4fa9d3164d45f65ab16f8cd17c02e997105e5fb0988a7a4c5d4230976ba0c5ef/
 						// connection = (HttpURLConnection) url.openConnection();
-					//Proxy proxyServer = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.6.248.80", 8080));
-					 Proxy proxyServer = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("172.22.1.30", 8080));
+					Proxy proxyServer = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.6.248.80", 8080));
+					 //Proxy proxyServer = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("172.22.1.30", 8080));
 
 					connection = (HttpURLConnection) url.openConnection(proxyServer);
 	                connection.setDoOutput(true);
@@ -714,6 +799,11 @@ public class Serial_Class extends Serial_Base {
 			 dLat = iLat / Math.pow(10, fracLat);
 			 strLat = String.valueOf(dLat);
 
+			 // IMESの初期値は 0000
+			 if ("0".equals(strLat)) {
+				System.out.print("Lat use default ");
+				strLat = "36.5941"; // デフォルト値
+			 }
 			 System.out.println("strLat="+strLat);
 
 			 // 経度情報
@@ -728,6 +818,12 @@ public class Serial_Class extends Serial_Base {
 			 strLng = String.valueOf(dLng);
 
 			 //System.out.println("fracLng"+fracLng+" iLng="+iLng);
+
+			 // IMESの初期値は0000
+			 if ("0".equals(strLng)) {
+				System.out.print("Lng use default ");
+				strLng = "136.6204"; // デフォルト値
+			 }
 			 System.out.println("strLng=" + strLng);
 
 			 if (rXY == null || rXY.getX() == null ){
@@ -746,9 +842,9 @@ public class Serial_Class extends Serial_Base {
 			 sbPost.append("&y=");
 			 sbPost.append(rXY.getY()); // 学習器から取得
 			 sbPost.append("&oAcc=2&lat=");
-			 sbPost.append(strLat);
+			 sbPost.append(strLat);   // IMESから取得
 			 sbPost.append("&lng=");
-			 sbPost.append(strLng);
+			 sbPost.append(strLng);     // IMESから取得
 			 sbPost.append("&floor=");
 			 sbPost.append(strFloor);
 			 sbPost.append("&iAcc=15.0&battery=");

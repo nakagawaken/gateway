@@ -77,10 +77,24 @@ public class MainFrame extends JFrame {
 	  cp.add(bt2);
 	  bt2.setBounds(300,400,150,40);
 
-
+	  // クラウド操作のテスト用
 	  JButton bt_upd = new JButton(new update_action());
 	  cp.add(bt_upd);
 	  bt_upd.setBounds(50,500,150,40);
+
+	  // 学習器との通信用ボタン
+	  JButton bt_forest = new JButton(new forest_action());
+	  cp.add(bt_forest);
+	  bt_forest.setBounds(300,500,150,40);
+
+	  //============================================================================
+	  //ログレベルのためのコンボボックス
+	  JLabel log_label = new JLabel("ログレベル：");
+	  cp.add(log_label);
+	  log_label.setBounds(50,600,100,20);
+	  cp.add(serial.log_combo);
+	  serial.log_combo.setBounds(350,600,80,20);
+
 
 	  //ここまでがコンストラクタです。
 	 }
@@ -113,6 +127,22 @@ public class MainFrame extends JFrame {
 	  public void actionPerformed(ActionEvent e)
 	  {
 	    serial.close();
+	  }
+
+	 }
+
+	 //****学習器との通信サーバーを起動　　******************************************
+	 class forest_action extends AbstractAction
+	 {
+		 forest_action()
+		 {
+			 putValue(Action.NAME,"学習器との通信");
+		 }
+
+	  public void actionPerformed(ActionEvent e)
+	  {
+	    serial.forestServer();
+
 	  }
 
 	 }
