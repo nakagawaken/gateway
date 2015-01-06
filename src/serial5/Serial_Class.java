@@ -7,10 +7,10 @@ import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -19,6 +19,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
@@ -49,11 +50,29 @@ public class Serial_Class extends Serial_Base {
      // ログ
      private static Logger logger = Logger.getGlobal();
      int iLoglevel = 2;
+     long start_mt = System.currentTimeMillis();
+
+     // プロパティファイル
+     private Properties prop = new Properties();
 
 	 //=============================================================================
 	 //コンストラクタ
 	 Serial_Class()
 	 {
+		 //プロパティファイル読み込み処理
+
+		 try {
+			 prop.loadFromXML(new FileInputStream("Gateway.xml"));
+		 } catch (IOException e ){
+			 System.err.println("Cannot open Gateway.xml");
+			 e.printStackTrace();
+		 }
+		 prop.list(System.out);
+		 // プロパティ一覧の表示
+//	        for (Entry<Object, Object> entry : prop.entrySet()) {
+	//            System.out.println(entry.getKey() + " = " + entry.getValue());
+	//        }
+
 	  //テキストエリアを作成
 	  tx = new JTextArea();
 
@@ -247,7 +266,7 @@ public class Serial_Class extends Serial_Base {
 	         is.close();
 	         echoSocket.close();
 		 }catch (Exception e){
-
+			 	e.printStackTrace();
 		 }
 
 	 }
@@ -270,11 +289,12 @@ public class Serial_Class extends Serial_Base {
 			StringBuffer buffer = new StringBuffer();  // テキストデータ受信
 			StringBuffer bufferBinary = new StringBuffer(); // バイナリデータ受信
 			ByteArrayOutputStream ba = new ByteArrayOutputStream();
+	    	 long mt = 0;
 
 			System.out.println("1");
 
 		   //受信完了の合図があれば・・・
-		   if(Serial_event.getEventType() == SerialPortEvent.DATA_AVAILABLE)
+		   if (Serial_event.getEventType() == SerialPortEvent.DATA_AVAILABLE)
 		   {
 			    System.out.println("2");
 		    //--------------------------------------------------------------------------
@@ -282,6 +302,7 @@ public class Serial_Class extends Serial_Base {
 
 			    int ozvcnt = 0;
 			    int ozvstart =0;
+			    int checksum = 0;
 
 			    while(true)
 			    {
@@ -289,9 +310,24 @@ public class Serial_Class extends Serial_Base {
 				     {
 				    	 received_data = in.read();// 入力ストリームから読み込み
 
+
+				    	 try {
+				    		 mt = System.currentTimeMillis();
+				    	 } catch (Exception e) {
+							 	e.printStackTrace();
+				    	 }
+
 				    	 if (iLoglevel == 2 ) {
-				    		 logger.info("first="+first_byte+ " mode="+output_mode +
-								 " ozvcnt="+String.format("%02d", ozvcnt) + " data=" + String.format("%02X", received_data)  );
+				    		 //logger.info
+				    		 try {
+					    		 System.out.println
+					    		 ( "time=" + String.format("%013d", (long)(mt - start_mt) )
+					    		 		+ " first="+first_byte+ " mode="+output_mode +
+									 " ozvcnt="+String.format("%02d", ozvcnt) + " data=" + String.format("%02X", received_data)  );
+				    		 } catch (Exception ex){
+				    			 ex.printStackTrace();
+				    		 }
+
 				    	 }
 
 					     //文字無しの場合はすぐに抜けます。
@@ -307,23 +343,36 @@ public class Serial_Class extends Serial_Base {
 					    if (ozvcnt < 46) //　ここで終了
 					    {
 					    	// 先頭文字
-					    	if (first_byte == 0 && (char)received_data == 0xFE ) {
+					    	if (first_byte == 0 && (char)received_data == 0xFE && ozvstart == 0 ) {
 
 								System.out.println("4 binary OZV");
+
 					    		output_mode = 1; //binary
 
-					    		first_byte = 1;
+					    		first_byte = 1;// 開始した
 					    		ozvstart = 1; // 開始した
 
+					    		checksum = 0; /// リセット
 					    	} else if (first_byte == 0 ){
 								System.out.println("4 text");
 
 					    		output_mode = 0; // text
 					    		first_byte = 1;
+					    	} else if (first_byte ==1 && ozvcnt == 0){
+					    		// ここはOZV的には異常データ
+					    		// テキストモードならばスルーだが、
+					    		System.out.println("reset ozvstart=" + ozvstart + " to 0");
+					    		ozvstart = 0; // resetする
+					    		first_byte = 0; // resetかける
 					    	} else {
 					    		// ここは first_byte = 1の場合に来るが何もしなくて良い
+
 					    	}
 
+					    	if (ozvcnt != 0){ // 1以上
+					    		// XORの積算
+					    		checksum = checksum ^ received_data;
+					    	}
 					    	if (output_mode == 1) {
 					    		//bufferBinary.append(received_data);
 					    		ba.write(received_data);
@@ -336,7 +385,9 @@ public class Serial_Class extends Serial_Base {
 					    //文字列の終わりなら、最後に改行コードを足して、テキストエリアへ表示。
 					    else
 					    {
-							System.out.println("Gateway Data finish cnt="+ozvcnt);
+							System.out.println("Gateway Data finish cnt="+ozvcnt +
+									" last data=" + String.format("%02X",received_data) +
+									" checksum="  + String.format("%02X",checksum)   );
 							ozvcnt = 0;
 
 					    	if (output_mode == 0) { // text
@@ -370,13 +421,20 @@ public class Serial_Class extends Serial_Base {
 					    		}
 
 
-					    		// 学習器の処理が入る●
-					    		RSSIXY rssiXY = forest(bufferbyte);
+					    		if (received_data == checksum) {
+					    		// 学習器の処理が入る
+						    		RSSIXY rssiXY = forest(bufferbyte);
 
 
-
-							    // クラウド更新処理
-							    updateStore(buffertx.toString(), rssiXY);
+								    // クラウド更新処理
+						    		// ●切り替えできるように
+					    			System.out.println("no cloud");
+						    		//updateStore(buffertx.toString(), rssiXY);
+					    		} else {
+					    			// チェックサムが一致していない
+					    			// 学習器とクラウドには送らない
+					    			System.out.println("no forest no Store");
+					    		}
 
 					    		buffertx.append('\n'); // 改行追加
 
@@ -404,7 +462,11 @@ public class Serial_Class extends Serial_Base {
 			    }  //while()文ここまで。
 			} // ifここまで
 
-		    System.out.println("6 end serialEvent");
+		   mt = System.currentTimeMillis();
+		    System.out.println(
+		    		"time=" + String.format("%013d", (mt - start_mt) )	+
+		    		"6 end serialEvent");
+
 	  } // serialEventメソッド
 
 		// 学習器とのIF処理
@@ -413,30 +475,12 @@ public class Serial_Class extends Serial_Base {
 		public RSSIXY forest(byte[] bRssi){
     		RSSIXY rssiXY = new RSSIXY(null, null);
 
-         	System.out.println("forest() bRssi.length="+ bRssi.length);
-/*
-            // ポートを開く　同じPC　かつ　ポート番号埋め込み●●
-            // "localhost"ではつながらない
-            try {
-                //echoSocket = new Socket("10.247.97.178", 5550 );
-                echoSocket = new Socket("172.22.2.40", 10000 );
+    		long  mt = System.currentTimeMillis();
+         	System.out.println(
+         			"time=" + String.format("%013d", (mt - start_mt) )	+
+         			"forest() "+
+         					" bRssi.length=" + bRssi.length);
 
-                System.out.println("Gateway socket");
-
-                os = new DataOutputStream(echoSocket.getOutputStream());
-
-                System.out.println("Gateway DataOutput");
-
-                is = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
-
-                System.out.println("Gateway InputStream");
-
-            } catch (UnknownHostException e) {
-                System.err.println("Don't know about host:");
-            } catch (IOException e) {
-                System.err.println("Couldn't get I/O for the connection to: localhost");
-            }
-*/
 
 
             // サーバーにメッセージを送る
@@ -464,16 +508,6 @@ public class Serial_Class extends Serial_Base {
 
     	                System.out.println("Gateway write");
 
-    	                //os.writeBytes("HELLO\n");
-
-    	                // サーバーからのメッセージを受け取り画面に表示します
-    /*
-    	            	String responseLine;
-    	                if ((responseLine = is.readLine()) != null) {
-    	                	System.out.println("Server: " + responseLine);
-    	                }
-    */
-
 
 
     	            	// 学習器から受け取る
@@ -482,8 +516,6 @@ public class Serial_Class extends Serial_Base {
     	                int txcount = 0; // 何バイト読んだか
     	                // サーバーからのメッセージを待つ
     	        		ByteArrayOutputStream ba = new ByteArrayOutputStream();
-
-
 
 
 
@@ -652,7 +684,11 @@ public class Serial_Class extends Serial_Base {
 
 		 public void updateStore(String strOZV, RSSIXY rXY)
 		 {
-			 System.out.println("update");
+	 		long  mt = System.currentTimeMillis();
+			 System.out.println(
+	         			"time=" + String.format("%013d", (mt - start_mt) )	+
+	         			"updateStore() "
+					 );
 
 			 URL url = null;
 	         HttpURLConnection connection = null;
@@ -668,7 +704,8 @@ public class Serial_Class extends Serial_Base {
 
 				 ProxyAuthenticator pa = new ProxyAuthenticator("http://proxy.ricoh.co.jp:8080/", "z00s108018", "ken@1126");
 
-				 Authenticator.setDefault(pa);
+				 // 認証不要ならコメントアウト
+				 //Authenticator.setDefault(pa);
 
 
 				 System.out.println("u3");
@@ -677,8 +714,11 @@ public class Serial_Class extends Serial_Base {
 				 try {
 						// 参考　http://www.freeshow.net.cn/ja/questions/4fa9d3164d45f65ab16f8cd17c02e997105e5fb0988a7a4c5d4230976ba0c5ef/
 						// connection = (HttpURLConnection) url.openConnection();
-					Proxy proxyServer = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.6.248.80", 8080));
-					 //Proxy proxyServer = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("172.22.1.30", 8080));
+
+					 // RITSのプロキシ
+					// Proxy proxyServer = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.6.248.80", 8080));
+					// 試験場のプロキシ
+					Proxy proxyServer = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("172.22.1.30", 8080));
 
 					connection = (HttpURLConnection) url.openConnection(proxyServer);
 	                connection.setDoOutput(true);
@@ -703,7 +743,11 @@ public class Serial_Class extends Serial_Base {
 					 ps.print(parameterString);
 					 ps.close();
 
-					 System.out.println("u7");
+
+					 mt = System.currentTimeMillis();
+					 System.out.println(
+			         			"time=" + String.format("%013d", (mt - start_mt) )	+
+							 "update 7 ");
 
 	                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
 	                    try (InputStreamReader isr = new InputStreamReader(connection.getInputStream(),
@@ -715,6 +759,13 @@ public class Serial_Class extends Serial_Base {
 	                        }
 	                    }
 	                }
+
+					 mt = System.currentTimeMillis();
+					 System.out.println(
+			         			"time=" + String.format("%013d", (mt - start_mt) )	+
+							 "update 8 ");
+
+
 				 } finally {
 	                if (connection != null) {
 	                    connection.disconnect();
@@ -800,7 +851,7 @@ public class Serial_Class extends Serial_Base {
 			 strLat = String.valueOf(dLat);
 
 			 // IMESの初期値は 0000
-			 if ("0".equals(strLat)) {
+			 if ("0.0".equals(strLat)) {
 				System.out.print("Lat use default ");
 				strLat = "36.5941"; // デフォルト値
 			 }
@@ -820,7 +871,7 @@ public class Serial_Class extends Serial_Base {
 			 //System.out.println("fracLng"+fracLng+" iLng="+iLng);
 
 			 // IMESの初期値は0000
-			 if ("0".equals(strLng)) {
+			 if ("0.0".equals(strLng)) {
 				System.out.print("Lng use default ");
 				strLng = "136.6204"; // デフォルト値
 			 }
