@@ -6,16 +6,19 @@
 <entry key="cloud">thread</entry>
 <!-- loglevel 0:少ないSEVERE 1:普通 WARNING 2:多い INFO -->
 <entry key="loglevel">2</entry>
-	<!--シリアルポートのデフォルト--><entry key="serialCOM">COM5</entry>
+	<!--シリアルポートのデフォルト RITS COM5/COM10 IRII COM27-->
+<entry key="serialCOM">COM27</entry>
 <!--シリアルポートのデフォルト通信速度  TOCOS 115200 OZV 38400-->
-	<entry key="serialBau">115200</entry>
-	<!--プロキシ認証の有無 on off--><entry key="authproxy">on</entry>
+	<entry key="serialBau">38400</entry>
+	<!--プロキシ認証の有無 on off--><entry key="authproxy">off</entry>
 <!--認証プロキシURL-->
 	<entry key="authurl">http://proxy.ricoh.co.jp:8080/</entry>
 <!--認証プロキシユーザー名-->
-	<entry key="authuser">z00s108018</entry><!--認証プロキシパスワード-->
-	<entry key="authpwd">ken@1126</entry><!--プロキシIPアドレス RITS:10.6.248.80 IRII 172.22.1.30-->
-	<entry key="proxyIP">10.6.248.80</entry><!--プロキシポート番号-->
+	<entry key="authuser">no</entry>
+<!--認証プロキシパスワード-->
+	<entry key="authpwd">no</entry>
+<!--プロキシIPアドレス RITS:10.6.248.80 IRII 172.22.1.30-->
+	<entry key="proxyIP">172.22.1.30</entry><!--プロキシポート番号-->
 	<entry key="proxyPort">8080</entry><!--チェックサム処理-->
-	<entry key="checksum">off</entry>
+	<entry key="checksum">on</entry>
 </properties>

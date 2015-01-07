@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.net.Authenticator;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -53,7 +54,7 @@ public class Serial_Class extends Serial_Base {
      long start_mt = System.currentTimeMillis();
 
      // プロパティファイル
-     private Properties prop = new Properties();
+     private static Properties prop = new Properties();
 
 	 //=============================================================================
 	 //コンストラクタ
@@ -99,7 +100,10 @@ public class Serial_Class extends Serial_Base {
 	  com_combo.addItem("COM28");
 
 	  //デフォルト設定
-	  com_combo.setSelectedItem("COM27");
+	  // 	  com_combo.setSelectedItem("COM5");
+	  // 	  com_combo.setSelectedItem("COM10");
+	  // 試験場COM27 RITS COM5/COM10
+	  com_combo.setSelectedItem( prop.getProperty("serialCOM") );
 
 
 	  //ボー・レート用のコンボボックスを作成して、アイテムを入れておきます。
@@ -114,7 +118,8 @@ public class Serial_Class extends Serial_Base {
 
 	  //デフォルト設定
 //	  baud_combo.setSelectedItem("115200");
-	  baud_combo.setSelectedItem("38400");
+	  // TOCOS 115200 OZV:38400
+	  baud_combo.setSelectedItem( prop.getProperty("serialBau") );
 
 
 		  //ログ用のコンボボックスを作成して、アイテムを入れておきます。
@@ -422,18 +427,67 @@ public class Serial_Class extends Serial_Base {
 
 
 					    		if (received_data == checksum) {
+
 					    		// 学習器の処理が入る
 						    		RSSIXY rssiXY = forest(bufferbyte);
 
 
 								    // クラウド更新処理
-						    		// ●切り替えできるように
-					    			System.out.println("no cloud");
-						    		//updateStore(buffertx.toString(), rssiXY);
+						    		// プロパティ情報で、処理を切り替え
+					    			String strCloud = prop.getProperty("could");
+					    			if ("off".equals(strCloud ) )  {
+					    				// 何もしない
+						    			System.out.println("no cloud");
+					    			} else if ("on".equals(strCloud )) {
+					    				updateStore(buffertx.toString(), rssiXY);
+					    			} else if ("tread".equals(strCloud )) {
+					    				// スレッド処理
+						    			System.out.println("cloud 2 tread");
+
+						    			// そもそも0.5秒間隔で送る必要があるのか？
+						    			CloudThread ct = new CloudThread(buffertx.toString(), rssiXY);
+						    			ct.start();
+					    			} else {
+					    				// 基本的に来ない
+					    			}
+
+
 					    		} else {
 					    			// チェックサムが一致していない
 					    			// 学習器とクラウドには送らない
-					    			System.out.println("no forest no Store");
+					    			System.out.println("wrong checksum data="
+					    					+ String.format("%02X", received_data)
+					    					+ "checksum="
+					    					+ String.format("%02X", checksum)
+					    					+ "no forest no Store");
+
+					    			// RITS環境用（暫定処理）
+					    			if ("off".equals(prop.getProperty("checksum"))) {
+							    		// 学習器の処理が入る
+							    		RSSIXY rssiXY = forest(bufferbyte);
+
+
+									    // クラウド更新処理
+							    		// プロパティ情報で、処理を切り替え
+						    			String strCloud = new String (prop.getProperty("cloud"));
+						    			System.out.println("cloud = " + strCloud);
+						    			if ("off".equals(strCloud ) )  {
+						    				// 何もしない
+							    			System.out.println("no cloud");
+						    			} else if ("on".equals(strCloud )) {
+						    				updateStore(buffertx.toString(), rssiXY);
+						    			} else if ("thread".equals(strCloud )) {
+						    				// スレッド処理
+							    			System.out.println("cloud 2 tread");
+
+							    			// そもそも0.5秒間隔で送る必要があるのか？
+
+							    			CloudThread ct = new CloudThread(buffertx.toString(), rssiXY);
+							    			ct.start();
+						    			} else {
+						    				// 基本的に来ない
+						    			}
+					    			}
 					    		}
 
 					    		buffertx.append('\n'); // 改行追加
@@ -469,321 +523,298 @@ public class Serial_Class extends Serial_Base {
 
 	  } // serialEventメソッド
 
-		// 学習器とのIF処理
-		// 引数は OZVから受信したバイナリー列
-		// 返却は、X, YのString
-		public RSSIXY forest(byte[] bRssi){
-    		RSSIXY rssiXY = new RSSIXY(null, null);
-
-    		long  mt = System.currentTimeMillis();
-         	System.out.println(
-         			"time=" + String.format("%013d", (mt - start_mt) )	+
-         			"forest() "+
-         					" bRssi.length=" + bRssi.length);
 
 
 
-            // サーバーにメッセージを送る
-   //         if (echoSocket != null && os != null && is != null) {
-                try {
-
-    //	            for(int j=0; j<7 ;j++) {
-    	                // メッセージを送ります
-    	            	// バイナリメッセージを作成する
-    	            	byte forestData[] = new byte[52];
-    	            	// 学習器用のヘッダ
-    	            	forestData[0] = 0x02; // STX
-    	            	forestData[1] = 0x10; // コマンド
-    	            	forestData[2] = 0x2F; // 47バイト長
-    	            	forestData[3] = 0x00;
-    	            	for (int i = 0; i < bRssi.length; i++){
-    	            		forestData[i+4] = bRssi[i];
-    	            	}
-    	            	forestData[51] = 0x03; // ETX
-    	            	//forestData[52] = '\r'; // 終了
-
-    	                System.out.println("Gateway forestData");
-
-    	            	os.write(forestData);
-
-    	                System.out.println("Gateway write");
+	 }	 //内部クラスここまで。
+	 //****************************************
 
 
 
-    	            	// 学習器から受け取る
-    	                int starttx = 0; // 0開始前 1:開始後
-    	                int endtx = 0; // 0終了前 1:終了後
-    	                int txcount = 0; // 何バイト読んだか
-    	                // サーバーからのメッセージを待つ
-    	        		ByteArrayOutputStream ba = new ByteArrayOutputStream();
+	// 学習器とのIF処理
+	// 引数は OZVから受信したバイナリー列
+	// 返却は、X, YのString
+	public RSSIXY forest(byte[] bRssi){
+		RSSIXY rssiXY = new RSSIXY(null, null);
+
+		long  mt = System.currentTimeMillis();
+     	System.out.println(
+     			"time=" + String.format("%013d", (mt - start_mt) )	+
+     			"forest() "+
+     					" bRssi.length=" + bRssi.length);
 
 
 
+        // サーバーにメッセージを送る
+//         if (echoSocket != null && os != null && is != null) {
+            try {
 
-    	        		int iRecv = 0;
-    	            	while (true){
-    	                	iRecv = is.read();
-    	                	if ((char)iRecv == 0x02 && starttx == 0){
-    	                		starttx = 1;
-    	                		txcount++;
-    	                		ba.write(iRecv);
+//	            for(int j=0; j<7 ;j++) {
+	                // メッセージを送ります
+	            	// バイナリメッセージを作成する
+	            	byte forestData[] = new byte[52];
+	            	// 学習器用のヘッダ
+	            	forestData[0] = 0x02; // STX
+	            	forestData[1] = 0x10; // コマンド
+	            	forestData[2] = 0x2F; // 47バイト長
+	            	forestData[3] = 0x00;
+	            	for (int i = 0; i < bRssi.length; i++){
+	            		forestData[i+4] = bRssi[i];
+	            	}
+	            	forestData[51] = 0x03; // ETX
+	            	//forestData[52] = '\r'; // 終了
 
-    	                		System.out.println("Gateway STX");
-    	                	} else if ((char)iRecv == 0x03 && txcount == 5){
-    	                		ba.write(iRecv);
-    	                		// 異常系の終了
-    	                		System.out.println("Gateway Error ETX "+txcount);
+	                System.out.println("Gateway forestData");
 
-    	                		byte[] bufferbyte = ba.toByteArray();
+	            	os.write(forestData);
 
-    	    		    		StringBuffer buffertx = new StringBuffer();
-    	    		    		for (int i = 0 ; i < bufferbyte.length; i++){
-    	    		    			buffertx.append( String.format("%02X", bufferbyte[i])  );
-    	    		    		}
-    	    		    		buffertx.append('\n'); // 改行追加
-    	    		    		System.out.println(buffertx.toString());
-
-    	    		    		// 初期化処理
-    	    		    		ba.flush(); // streamにデータが残らないように
-    	    		    		ba = new ByteArrayOutputStream();
-    	                		starttx = 0; // フラグを戻す
-    	                		txcount = 0; // カウンタを戻す
-
-    	                		break;
-    	                	} else if ((char)iRecv == 0x03 && txcount == 10) {
-    	                		ba.write(iRecv);
-    	                		// 位置情報の終了
-    	                		System.out.println("Gateway XY ETX "+txcount);
-
-    	                		byte[] bufferbyte = ba.toByteArray();
-
-    	    		    		StringBuffer buffertx = new StringBuffer();
-    	    		    		for (int i = 0 ; i < bufferbyte.length; i++){
-    	    		    			buffertx.append( String.format("%02X", bufferbyte[i])  );
-    	    		    		}
-    	    		    		String strRSSI = buffertx.toString();
-
-    	    		    		// 位置情報かどうかを判定する
-    	    		    		if ("6".equals(strRSSI.substring(5,6))){
-    	    		    			// 位置情報
-    		    		    		System.out.println("Gateway1:"+strRSSI);
-
-    		    		    		StringBuffer sbX = new StringBuffer();
-    		    		    		StringBuffer sbY = new StringBuffer();
+	                System.out.println("Gateway write");
 
 
-    		    		    		sbX.append(strRSSI.substring(10, 12)).append(strRSSI.substring(8,10));
 
-    		    		    		sbY.append(strRSSI.substring(14, 16)).append(strRSSI.substring(12,14));
-    		    		    		int iX = Integer.parseInt(sbX.toString(), 16);
-    		    		    		int iY = Integer.parseInt(sbY.toString(), 16);
-    		    		    		double dX = (double)iX / 10;
-    		    		    		double dY = (double)iY / 10;
-
-    		    		    		String strX = String.valueOf(dX);
-    		    		    		String strY = String.valueOf(dY);
-
-    		    		    		System.out.println("Gateway1: X="+strX +" Y="+strY);
-
-    		    		    		rssiXY.setX(strX);
-    		    		    		rssiXY.setY(strY);
-
-    	    		    		} else if ("1".equals(strRSSI.substring(5,6))){
-    	    		    			// エラー系
-    		    		    		System.out.println("Gateway2:"+strRSSI);
-
-    	    		    		} else {
-    	    		    			// データに異常あり
-    		    		    		System.out.println("Gateway3:"+strRSSI);
-
-    	    		    		}
+	            	// 学習器から受け取る
+	                int starttx = 0; // 0開始前 1:開始後
+	                int endtx = 0; // 0終了前 1:終了後
+	                int txcount = 0; // 何バイト読んだか
+	                // サーバーからのメッセージを待つ
+	        		ByteArrayOutputStream ba = new ByteArrayOutputStream();
 
 
 
 
-    	    		    		// 初期化処理
-    	    		    		ba.flush(); // streamにデータが残らないように
-    	    		    		ba = new ByteArrayOutputStream();
-    	                		starttx = 0; // フラグを戻す
-    	                		txcount = 0; // カウンタを戻す
+	        		int iRecv = 0;
+	            	while (true){
+	                	iRecv = is.read();
+	                	if ((char)iRecv == 0x02 && starttx == 0){
+	                		starttx = 1;
+	                		txcount++;
+	                		ba.write(iRecv);
+
+	                		System.out.println("Gateway STX");
+	                	} else if ((char)iRecv == 0x03 && txcount == 5){
+	                		ba.write(iRecv);
+	                		// 異常系の終了
+	                		System.out.println("Gateway Error ETX "+txcount);
+
+	                		byte[] bufferbyte = ba.toByteArray();
+
+	    		    		StringBuffer buffertx = new StringBuffer();
+	    		    		for (int i = 0 ; i < bufferbyte.length; i++){
+	    		    			buffertx.append( String.format("%02X", bufferbyte[i])  );
+	    		    		}
+	    		    		buffertx.append('\n'); // 改行追加
+	    		    		System.out.println(buffertx.toString());
+
+	    		    		// 初期化処理
+	    		    		ba.flush(); // streamにデータが残らないように
+	    		    		ba = new ByteArrayOutputStream();
+	                		starttx = 0; // フラグを戻す
+	                		txcount = 0; // カウンタを戻す
+
+	                		break;
+	                	} else if ((char)iRecv == 0x03 && txcount == 10) {
+	                		ba.write(iRecv);
+	                		// 位置情報の終了
+	                		System.out.println("Gateway XY ETX "+txcount);
+
+	                		byte[] bufferbyte = ba.toByteArray();
+
+	    		    		StringBuffer buffertx = new StringBuffer();
+	    		    		for (int i = 0 ; i < bufferbyte.length; i++){
+	    		    			buffertx.append( String.format("%02X", bufferbyte[i])  );
+	    		    		}
+	    		    		String strRSSI = buffertx.toString();
+
+	    		    		// 位置情報かどうかを判定する
+	    		    		if ("6".equals(strRSSI.substring(5,6))){
+	    		    			// 位置情報
+		    		    		System.out.println("Gateway1:"+strRSSI);
+
+		    		    		StringBuffer sbX = new StringBuffer();
+		    		    		StringBuffer sbY = new StringBuffer();
 
 
-    	                		break;
+		    		    		sbX.append(strRSSI.substring(10, 12)).append(strRSSI.substring(8,10));
 
-    	                	} else if (txcount > 20){
-    	                		// 無限ループ対策
-    	        	    		System.out.println("txcount="+txcount);
+		    		    		sbY.append(strRSSI.substring(14, 16)).append(strRSSI.substring(12,14));
+		    		    		int iX = Integer.parseInt(sbX.toString(), 16);
+		    		    		int iY = Integer.parseInt(sbY.toString(), 16);
+		    		    		double dX = (double)iX / 10;
+		    		    		double dY = (double)iY / 10;
 
+		    		    		String strX = String.valueOf(dX);
+		    		    		String strY = String.valueOf(dY);
 
-    	        	    		break;  // 終了
-    	                	} else {// 開始終了以外
-    	                		txcount++;
-    	                		ba.write(iRecv);
+		    		    		System.out.println("Gateway1: X="+strX +" Y="+strY);
 
-    	                        System.out.println("Gateway count="+ txcount+
-    	                        		" Data=" +String.format("%02X", iRecv) );
+		    		    		rssiXY.setX(strX);
+		    		    		rssiXY.setY(strY);
 
-    	                	}
-    	            	}
+	    		    		} else if ("1".equals(strRSSI.substring(5,6))){
+	    		    			// エラー系
+		    		    		System.out.println("Gateway2:"+strRSSI);
 
+	    		    		} else {
+	    		    			// データに異常あり
+		    		    		System.out.println("Gateway3:"+strRSSI);
 
-    	//                Thread.sleep(3000); // ３秒待つ
-    	//            } forループ
-
-
-                } catch (UnknownHostException e) {
-                    System.err.println("Trying to connect to unknown host: " + e);
-                } catch (IOException e) {
-                    System.err.println("IOException: " + e);
-  //              } catch (InterruptedException e) {
-  //  				// TODO 自動生成された catch ブロック
-  //  				e.printStackTrace();
-    			}
-   //         }
+	    		    		}
 
 
-
-    		return rssiXY;
-		}
-
-
-
-
-		// 2014/12/10 未使用(意図通りに変換されない）
-	    public String encode( byte[] be) {
-	        String encodedStr = null;
-	        ByteArrayOutputStream os = null;
-
-			System.out.println("encode() len="+ be.length);
-	        try {
-	            os = new ByteArrayOutputStream();
-
-	            for( int i=0 ; i < be.length; i++ ) {
-	            	byte b = be[i];
-
-	                    // 上の 4 ビット
-	                    os.write( ( b >> 4 ) & 0x0F  );
-	                    // 下の 4 ビット
-	                    os.write( b & 0x0F  );
-	            }
-	            encodedStr = os.toString();
-	        } finally {
-	            try {
-	                // close する意味はないが, 一応
-	                if( os != null ) os.close();
-	            } catch( IOException err ) {
-	                err.printStackTrace();
-	            }
-	        }
-	        return encodedStr;
-	    }
+	    		    		// 初期化処理
+	    		    		ba.flush(); // streamにデータが残らないように
+	    		    		ba = new ByteArrayOutputStream();
+	                		starttx = 0; // フラグを戻す
+	                		txcount = 0; // カウンタを戻す
 
 
-		int i=2;
-		String[] APs = {"AAAA", "1111", "1234", "ABCD"};
+	                		break;
 
-		 public void updateStore(String strOZV, RSSIXY rXY)
-		 {
-	 		long  mt = System.currentTimeMillis();
-			 System.out.println(
-	         			"time=" + String.format("%013d", (mt - start_mt) )	+
-	         			"updateStore() "
-					 );
+	                	} else if (txcount > 20){
+	                		// 無限ループ対策
+	        	    		System.out.println("txcount="+txcount);
 
-			 URL url = null;
-	         HttpURLConnection connection = null;
+
+	        	    		break;  // 終了
+	                	} else {// 開始終了以外
+	                		txcount++;
+	                		ba.write(iRecv);
+
+	                        System.out.println("Gateway count="+ txcount+
+	                        		" Data=" +String.format("%02X", iRecv) );
+
+	                	}
+	            	}
+
+
+	//                Thread.sleep(3000); // ３秒待つ
+	//            } forループ
+
+
+            } catch (UnknownHostException e) {
+                System.err.println("Trying to connect to unknown host: " + e);
+            } catch (IOException e) {
+                System.err.println("IOException: " + e);
+//              } catch (InterruptedException e) {
+//  				// TODO 自動生成された catch ブロック
+//  				e.printStackTrace();
+			}
+//         }
+
+
+
+		return rssiXY;
+	}
+
+
+	// 内部クラスから外に出したけど、特に問題はない
+	// クラウドへ送る処理
+	 public void updateStore(String strOZV, RSSIXY rXY)
+	 {
+		long  mt = System.currentTimeMillis();
+		 System.out.println(
+        			"time=" + String.format("%013d", (mt - start_mt) )	+
+        			"updateStore() "
+				 );
+
+		 URL url = null;
+        HttpURLConnection connection = null;
+
+		 try {
+
+				// 参考　http://www.freeshow.net.cn/ja/questions/4fa9d3164d45f65ab16f8cd17c02e997105e5fb0988a7a4c5d4230976ba0c5ef/
+
+			 System.out.println("u2");
+			 url = new URL("http://ricohintern2014.appspot.com/posupdate");
+
+			 // Proxy認証設定
+
+			 if ("on".equals( prop.getProperty("authproxy")) ) {
+			 	System.out.println("need Proxy auth");
+
+			 	//	 "http://proxy.ricoh.co.jp:8080/", "z00s108018", "ken@1126"
+				 ProxyAuthenticator pa = new ProxyAuthenticator(
+					prop.getProperty("authurl"),
+					prop.getProperty("authuser"),
+					prop.getProperty("authpwd")
+						 );
+				 Authenticator.setDefault(pa);
+
+		 	} else {
+		 		// 認証不要のプロキシ
+		 		System.out.println("no Proxy auth");
+		 	}
+			 System.out.println("u3");
+
 
 			 try {
-
 					// 参考　http://www.freeshow.net.cn/ja/questions/4fa9d3164d45f65ab16f8cd17c02e997105e5fb0988a7a4c5d4230976ba0c5ef/
+					// connection = (HttpURLConnection) url.openConnection();
 
-				 System.out.println("u2");
-				 url = new URL("http://ricohintern2014.appspot.com/posupdate");
+				 // RITSのプロキシ　"10.6.248.80"　試験場のプロキシ　"172.22.1.30" 8080
+				Proxy proxyServer = new Proxy(Proxy.Type.HTTP,
+										new InetSocketAddress(prop.getProperty("proxyIP"),
+												Integer.parseInt(prop.getProperty("proxyPort")) )
+									);
 
-				 // Proxy認証設定
+				connection = (HttpURLConnection) url.openConnection(proxyServer);
+               connection.setDoOutput(true);
+               connection.setRequestMethod("POST");
 
-				 ProxyAuthenticator pa = new ProxyAuthenticator("http://proxy.ricoh.co.jp:8080/", "z00s108018", "ken@1126");
+				 System.out.println("u4");
 
-				 // 認証不要ならコメントアウト
-				 //Authenticator.setDefault(pa);
+				 PrintStream ps = new PrintStream(connection.getOutputStream());
 
-
-				 System.out.println("u3");
-
-
-				 try {
-						// 参考　http://www.freeshow.net.cn/ja/questions/4fa9d3164d45f65ab16f8cd17c02e997105e5fb0988a7a4c5d4230976ba0c5ef/
-						// connection = (HttpURLConnection) url.openConnection();
-
-					 // RITSのプロキシ
-					// Proxy proxyServer = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.6.248.80", 8080));
-					// 試験場のプロキシ
-					Proxy proxyServer = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("172.22.1.30", 8080));
-
-					connection = (HttpURLConnection) url.openConnection(proxyServer);
-	                connection.setDoOutput(true);
-	                connection.setRequestMethod("POST");
-
-					 System.out.println("u4");
-
-					 PrintStream ps = new PrintStream(connection.getOutputStream());
-
-					 System.out.println("u5");
-					 i++; // 位置変更
+				 System.out.println("u5");
 
 
-					 String parameterString = ozv2cloudData(strOZV, rXY);
-//					 String parameterString = new String(
-//	                		"ItemID=0000&APIDs="+ ( APs[i % 4] ) +"&RSSIs=99,88,77&x="+i+
-//	                		".0&y=3.0&oAcc=2&lat=36.1234&lng=136.4567&floor=2.0&iAcc=15.0&battery="+i+".5");
+				 // クラウドへ上げるデータ列
+				 String parameterString = ozv2cloudData(strOZV, rXY);
+
+				 System.out.println("u6 " + parameterString);
+
+				 ps.print(parameterString);
+				 ps.close();
 
 
-					 System.out.println("u6 " + parameterString);
+				 mt = System.currentTimeMillis();
+				 System.out.println(
+		         			"time=" + String.format("%013d", (mt - start_mt) )	+
+						 "update 7 upload");
 
-					 ps.print(parameterString);
-					 ps.close();
+               if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                   try (InputStreamReader isr = new InputStreamReader(connection.getInputStream(),
+                                                                      StandardCharsets.UTF_8);
+                        BufferedReader reader = new BufferedReader(isr)) {
+                       String line;
+                       while ((line = reader.readLine()) != null) {
+                           System.out.println(line);
+                       }
+                   }
+               }
 
-
-					 mt = System.currentTimeMillis();
-					 System.out.println(
-			         			"time=" + String.format("%013d", (mt - start_mt) )	+
-							 "update 7 ");
-
-	                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-	                    try (InputStreamReader isr = new InputStreamReader(connection.getInputStream(),
-	                                                                       StandardCharsets.UTF_8);
-	                         BufferedReader reader = new BufferedReader(isr)) {
-	                        String line;
-	                        while ((line = reader.readLine()) != null) {
-	                            System.out.println(line);
-	                        }
-	                    }
-	                }
-
-					 mt = System.currentTimeMillis();
-					 System.out.println(
-			         			"time=" + String.format("%013d", (mt - start_mt) )	+
-							 "update 8 ");
+				 mt = System.currentTimeMillis();
+				 System.out.println(
+		         			"time=" + String.format("%013d", (mt - start_mt) )	+
+						 "update 8 response ");
 
 
-				 } finally {
-	                if (connection != null) {
-	                    connection.disconnect();
-	                }
-				 }
+			 } finally {
+               if (connection != null) {
+                   connection.disconnect();
+               }
+			 }
 
-	        } catch (IOException ei) {
-	            ei.printStackTrace();
+       } catch (IOException ei) {
+           ei.printStackTrace();
 
-			}
+		}
+		    // 受信結果をUIに表示
+		//    tv.setText( ret );
+	 }
 
-
-			    // 受信結果をUIに表示
-			//    tv.setText( ret );
-		 } // actionPerformed
-
-
-// 受信データ例
+		// 内部クラスから外に出したけど大丈夫か？
+	// 受信データ例
 //  FE2A6A62112233262801440000010019040594C90414D9AE071111CC2222CA3333C94444C8111280111280111280CC
 		 // OZVから受信したデータをクラウド用に整形する
 		 String ozv2cloudData(String strOZV, RSSIXY rXY){
@@ -918,7 +949,23 @@ public class Serial_Class extends Serial_Base {
 
 
 
-	 }	 //内部クラスここまで。
-	 //****************************************
+		// クラウドへ送るスレッド
+		class CloudThread extends Thread {
+
+			private String strOZV;
+			private RSSIXY rXY;
+
+			// コンストラクタ
+			public CloudThread(String ozv, RSSIXY xy) {
+				this.strOZV = ozv;
+				this.rXY = xy;
+			}
+
+			public void run() {
+
+				updateStore(this.strOZV, this.rXY);
+			}
+
+		}
 
 }
