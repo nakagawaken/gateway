@@ -406,7 +406,7 @@ public class Serial_Class extends Serial_Base {
 								tx.append("text mode:" + buffer.toString() );
 
 							    // クラウド更新処理
-							    updateStore(buffer.toString(), null);
+							    updateStore(buffer.toString(), null, 0L);
 
 							    //バッファを一応、空にしておきます。
 							    buffer.delete(0,buffer.length()-1);
@@ -434,13 +434,13 @@ public class Serial_Class extends Serial_Base {
 
 								    // クラウド更新処理
 						    		// プロパティ情報で、処理を切り替え
-					    			String strCloud = prop.getProperty("could");
+					    			String strCloud = prop.getProperty("cloud");
 					    			if ("off".equals(strCloud ) )  {
 					    				// 何もしない
 						    			System.out.println("no cloud");
 					    			} else if ("on".equals(strCloud )) {
-					    				updateStore(buffertx.toString(), rssiXY);
-					    			} else if ("tread".equals(strCloud )) {
+					    				updateStore(buffertx.toString(), rssiXY, 0L);
+					    			} else if ("thread".equals(strCloud )) {
 					    				// スレッド処理
 						    			System.out.println("cloud 2 tread");
 
@@ -475,7 +475,7 @@ public class Serial_Class extends Serial_Base {
 						    				// 何もしない
 							    			System.out.println("no cloud");
 						    			} else if ("on".equals(strCloud )) {
-						    				updateStore(buffertx.toString(), rssiXY);
+						    				updateStore(buffertx.toString(), rssiXY, 0L);
 						    			} else if ("thread".equals(strCloud )) {
 						    				// スレッド処理
 							    			System.out.println("cloud 2 tread");
@@ -709,7 +709,8 @@ public class Serial_Class extends Serial_Base {
 
 	// 内部クラスから外に出したけど、特に問題はない
 	// クラウドへ送る処理
-	 public void updateStore(String strOZV, RSSIXY rXY)
+	// long tid スレッド固有ID
+	 public void updateStore(String strOZV, RSSIXY rXY, long tid)
 	 {
 		long  mt = System.currentTimeMillis();
 		 System.out.println(
@@ -777,10 +778,11 @@ public class Serial_Class extends Serial_Base {
 				 ps.close();
 
 
-				 mt = System.currentTimeMillis();
+				 long mtBefore = System.currentTimeMillis();
 				 System.out.println(
-		         			"time=" + String.format("%013d", (mt - start_mt) )	+
-						 "update 7 upload");
+		         			"time=" + String.format("%013d", (mtBefore - start_mt) )	+
+						 "update 7 upload  thread ID="
+		         			+  String.format("%d",  tid)   );
 
                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                    try (InputStreamReader isr = new InputStreamReader(connection.getInputStream(),
@@ -793,10 +795,12 @@ public class Serial_Class extends Serial_Base {
                    }
                }
 
-				 mt = System.currentTimeMillis();
+				 long mtAfter = System.currentTimeMillis();
 				 System.out.println(
-		         			"time=" + String.format("%013d", (mt - start_mt) )	+
-						 "update 8 response ");
+		         			"time=" + String.format("%013d", (mtAfter - start_mt) )	+
+						 "update 8 response thread ID= "
+						 +  String.format("%d",  tid)
+						 + " diff=" + String.format("%013d",  (mtAfter - mtBefore )));
 
 
 			 } finally {
@@ -954,16 +958,18 @@ public class Serial_Class extends Serial_Base {
 
 			private String strOZV;
 			private RSSIXY rXY;
+			private long tid; // スレッド固有のID
 
 			// コンストラクタ
 			public CloudThread(String ozv, RSSIXY xy) {
 				this.strOZV = ozv;
 				this.rXY = xy;
+				this.tid = this.getId();
 			}
 
 			public void run() {
 
-				updateStore(this.strOZV, this.rXY);
+				updateStore(this.strOZV, this.rXY, this.tid);
 			}
 
 		}
