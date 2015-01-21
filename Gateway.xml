@@ -17,5 +17,6 @@
 	<entry key="authpwd">ken@1126</entry><!--プロキシIPアドレス RITS:10.6.248.80 IRII 172.22.1.30-->
 	<entry key="proxyIP">10.6.248.80</entry><!--プロキシポート番号-->
 	<entry key="proxyPort">8080</entry><!--チェックサム処理-->
-	<entry key="checksum">off</entry>
+	<entry key="checksum">off</entry><!--クラウド送信の閾値-->
+	<entry key="cloudLength">1.3</entry>
 </properties>

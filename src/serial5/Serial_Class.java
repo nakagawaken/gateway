@@ -20,6 +20,9 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,7 +31,9 @@ import java.util.logging.StreamHandler;
 import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.table.DefaultTableModel;
 
 public class Serial_Class extends Serial_Base {
 
@@ -39,6 +44,8 @@ public class Serial_Class extends Serial_Base {
 	 JComboBox<String> log_combo;
 	 JTextArea tx;
 	 JScrollPane scrollPane;
+	 JTable table;
+	 DefaultTableModel tableModel;
 
      // Gatewayがサーバーになる
      ServerSocket echoServer = null;
@@ -144,6 +151,17 @@ public class Serial_Class extends Serial_Base {
 			});
 		  logger.setLevel(Level.INFO); // ここでしないと反映しない？
 			logger.setUseParentHandlers(false);
+
+
+		// タグの座標表示
+		 String[] columnNames = {"タグ", "最新 X座標", "最新 Y座標",
+				 "前回 X座標", "前回 Y座標", "クラウド X", "クラウド Y"};
+		 String[][] initcol = { {"", "", "", "", "", "", ""} };
+
+		 tableModel = new DefaultTableModel(initcol, columnNames);
+		 table = new JTable(tableModel);
+		 table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
 
 	 }
 
@@ -276,6 +294,8 @@ public class Serial_Class extends Serial_Base {
 
 	 }
 
+	 // タグの位置情報を管理
+	 Map<String, HistoryXY> tagMap = Collections.synchronizedMap(new HashMap());
 
 	 //*****************************************************************************
 	 //内部クラスとして、イベントリスナを記述します。
@@ -283,6 +303,8 @@ public class Serial_Class extends Serial_Base {
 	{
 		int output_mode = 0; // 0: text 1:binary
 		int first_byte = 0; // 先頭文字の判定 0: 先頭 1:先頭以外
+
+
 
 		//============================================================================
 		//受信イベント発生時に呼び出されるメソッド
@@ -313,7 +335,7 @@ public class Serial_Class extends Serial_Base {
 			    {
 				     try
 				     {
-				    	 received_data = in.read();// 入力ストリームから読み込み
+				    	 received_data = in.read();// 入力ストリームから読み込み（返却はint)
 
 
 				    	 try {
@@ -397,7 +419,7 @@ public class Serial_Class extends Serial_Base {
 
 					    	if (output_mode == 0) { // text
 
-								System.out.println("Gateway Data finish text");
+								System.out.println("Gateway Data finish (text mode)");
 
 					    		//テキストエリア改行。
 								buffer.append('\n');
@@ -418,39 +440,21 @@ public class Serial_Class extends Serial_Base {
 
 					    		StringBuffer buffertx = new StringBuffer();
 
-								System.out.println("Gateway Data finish binary");
+								System.out.println("Gateway Data finish (binary mode)");
 
-
+								// ここは高速化できる？
 					    		for (int i = 0 ; i < bufferbyte.length; i++){
+					    		//	buffertx.append(Character.forDigit(bufferbyte[i+1] >> 4 & 0xF, 16));
+					    		//	buffertx.append(Character.forDigit(bufferbyte[i+1] & 0xF, 16));
+					    		//	buffertx.append(Character.forDigit(bufferbyte[i] >> 4 & 0xF, 16));
+					    		//	buffertx.append(Character.forDigit(bufferbyte[i] & 0xF, 16));
 					    			buffertx.append( String.format("%02X", bufferbyte[i])  );
 					    		}
 
 
 					    		if (received_data == checksum) {
-
-					    		// 学習器の処理が入る
-						    		RSSIXY rssiXY = forest(bufferbyte);
-
-
-								    // クラウド更新処理
-						    		// プロパティ情報で、処理を切り替え
-					    			String strCloud = prop.getProperty("cloud");
-					    			if ("off".equals(strCloud ) )  {
-					    				// 何もしない
-						    			System.out.println("no cloud");
-					    			} else if ("on".equals(strCloud )) {
-					    				updateStore(buffertx.toString(), rssiXY, 0L);
-					    			} else if ("thread".equals(strCloud )) {
-					    				// スレッド処理
-						    			System.out.println("cloud 2 tread");
-
-						    			// そもそも0.5秒間隔で送る必要があるのか？
-						    			CloudThread ct = new CloudThread(buffertx.toString(), rssiXY);
-						    			ct.start();
-					    			} else {
-					    				// 基本的に来ない
-					    			}
-
+					    			// 学習器とクラウド処理
+					    			learner(bufferbyte, buffertx);
 
 					    		} else {
 					    			// チェックサムが一致していない
@@ -461,40 +465,17 @@ public class Serial_Class extends Serial_Base {
 					    					+ String.format("%02X", checksum)
 					    					+ "no forest no Store");
 
-					    			// RITS環境用（暫定処理）
-					    			if ("off".equals(prop.getProperty("checksum"))) {
-							    		// 学習器の処理が入る
-							    		RSSIXY rssiXY = forest(bufferbyte);
-
-
-									    // クラウド更新処理
-							    		// プロパティ情報で、処理を切り替え
-						    			String strCloud = new String (prop.getProperty("cloud"));
-						    			System.out.println("cloud = " + strCloud);
-						    			if ("off".equals(strCloud ) )  {
-						    				// 何もしない
-							    			System.out.println("no cloud");
-						    			} else if ("on".equals(strCloud )) {
-						    				updateStore(buffertx.toString(), rssiXY, 0L);
-						    			} else if ("thread".equals(strCloud )) {
-						    				// スレッド処理
-							    			System.out.println("cloud 2 tread");
-
-							    			// そもそも0.5秒間隔で送る必要があるのか？
-
-							    			CloudThread ct = new CloudThread(buffertx.toString(), rssiXY);
-							    			ct.start();
-						    			} else {
-						    				// 基本的に来ない
-						    			}
-					    			}
+					    			// RITS環境用（暫定処理）チェックサムをチェックしない
+					    			//if ("off".equals(prop.getProperty("checksum"))) {
+					    				// 学習器に送る処理
+					    			//}
 					    		}
 
 					    		buffertx.append('\n'); // 改行追加
 
 					    		// バイナリ→テキスト変換
 								//バッファの内容を文字列にして、テキストエリアへ追加。
-								tx.append("binary mode:" + buffertx.toString() );
+								tx.append("bin mode:" + buffertx.toString() );
 
 //					    		String binarystr = encode(bufferbyte);
 //					    		tx.append("binary mode:" + binarystr );
@@ -528,6 +509,148 @@ public class Serial_Class extends Serial_Base {
 
 	 }	 //内部クラスここまで。
 	 //****************************************
+
+	public void learner(byte[] bufferbyte, StringBuffer buffertx){
+
+		int newclouddata = 0; // 更新するかしないか判定フラグ
+
+		String strCloudLength = prop.getProperty("cloudLength");
+		double cloudLength = Double.parseDouble(strCloudLength);
+
+		// 学習器の処理が入る
+		RSSIXY rssiXY = forest(bufferbyte);
+
+		// エラー返却時の処理は？●
+
+		// ●ここで一旦タグと位置情報を取り出す
+		StringBuffer tagsb = new StringBuffer();
+		tagsb.append(Character.forDigit(bufferbyte[5] >> 4 & 0xF, 16));
+		tagsb.append(Character.forDigit(bufferbyte[5] & 0xF, 16));
+		tagsb.append(Character.forDigit(bufferbyte[4] >> 4 & 0xF, 16));
+		tagsb.append(Character.forDigit(bufferbyte[4] & 0xF, 16));
+
+		// タグID
+		String stTag = tagsb.toString();
+		// タグの表
+		String[] tabledata = new String[7];
+
+		// タグMap(tagMap)の同一データがあるか探す
+		Object tVal = tagMap.get(stTag);
+		// 更新の場合は、座標情報を変更する必要がある
+		HistoryXY oldTag = (HistoryXY)tVal;
+
+		if (tVal == null) {
+			// 新規
+    		HistoryXY hTag = new HistoryXY(stTag, rssiXY.getX(), rssiXY.getY());
+
+    		tabledata[0] = hTag.getTagid();
+    		tabledata[1] = hTag.getNowX();
+    		tabledata[2] = hTag.getNowY();
+    		tabledata[3] = "";
+    		tabledata[4] = "";
+    		tabledata[5] = hTag.getNowX();
+    		tabledata[6] = hTag.getNowY();
+
+			newclouddata = 1;
+
+			tagMap.put(stTag, hTag);
+		} else {
+			// 既にタグの同一データがあった場合
+
+			// クラウドデータとの比較
+			double dx = Double.parseDouble(oldTag.getCloudX());
+			double dy = Double.parseDouble(oldTag.getCloudY());
+
+			// 新規の座標
+			double nx = Double.parseDouble(rssiXY.getX());
+			double ny = Double.parseDouble(rssiXY.getY());
+
+			System.out.println(
+					"Cloud dx=" +String.format("%.1f", dx)+
+					"      dy=" +String.format("%.1f", dy) +
+					" Now nx=" + String.format("%.1f", nx) +
+					"     ny=" + String.format("%.1f", ny) +
+					" Math.abs(dx - nx)=" + String.format("%.1f", Math.abs(dx - nx)) +
+					" Math.abs(dy - ny)=" + String.format("%.1f", Math.abs(dy - ny)) +
+					" CloudLength=" + String.format("%.1f", cloudLength)
+					);
+
+			if (Math.abs(dx - nx) > cloudLength || Math.abs(dy - ny) > cloudLength) {
+				// 1m以上動いた場合
+				oldTag.cloud(rssiXY.getX(), rssiXY.getY());
+
+				newclouddata = 1;
+
+
+			} else {
+				// 差分が閾値（プロパティ設定値）未満
+				System.out.println(" Less than "+ String.format("%.1f", cloudLength) + "m  no cloud");
+
+				newclouddata = 0;
+			}
+			// ここは共通処理
+			oldTag.update(rssiXY.getX(), rssiXY.getY());
+
+			tagMap.put(stTag, oldTag);
+		}
+
+
+		// テーブル更新処理
+		// 同じタグIDの行を探す(）
+		int ti = 0;
+		int cRow = table.getRowCount();
+		for(ti = 0; ti < cRow; ti++){
+			String sRow = (String)table.getValueAt(ti, 0);
+			if (sRow.equals(stTag)) {
+				break; // 一致した
+			}
+		}
+
+		if (ti == cRow){
+			// 同一データがテーブルにない＝新規タグ
+    		// 行追加
+    		tableModel.addRow(tabledata);
+		} else {
+			// 同一データがテーブルにある　更新する
+			table.setValueAt(oldTag.getNowX(), ti, 1);
+			table.setValueAt(oldTag.getNowY(), ti, 2);
+			table.setValueAt(oldTag.getLastX(), ti, 3);
+			table.setValueAt(oldTag.getLastY(), ti, 4);
+
+			if (newclouddata == 1) {
+				table.setValueAt(oldTag.getNowX(), ti, 5);
+				table.setValueAt(oldTag.getNowY(), ti, 6);
+			}
+		}
+		// 再表示
+		table.repaint();
+
+		// クラウド更新処理
+		if (newclouddata == 1) {
+			// プロパティ情報で、処理を切り替え
+			String strCloud = prop.getProperty("cloud");
+			if ("off".equals(strCloud ) )  {
+				// 何もしない
+				System.out.println("no cloud");
+			} else if ("on".equals(strCloud )) {
+				updateStore(buffertx.toString(), rssiXY, 0L);
+			} else if ("thread".equals(strCloud )) {
+				// スレッド処理
+				System.out.println("cloud 2 tread");
+
+				// そもそも0.5秒間隔で送る必要があるのか？
+				CloudThread ct = new CloudThread(buffertx.toString(), rssiXY);
+				ct.start();
+			} else {
+				// 基本的に来ない
+
+			}
+		} else {
+			// クラウドに上げない
+		}
+
+
+	}
 
 
 

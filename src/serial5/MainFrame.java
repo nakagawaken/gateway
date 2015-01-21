@@ -21,6 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 
 public class MainFrame extends JFrame {
@@ -64,7 +65,8 @@ public class MainFrame extends JFrame {
 	  serial.tx.setFont(font);
 	  serial.tx.setLineWrap(true);
 	  serial.tx.addKeyListener(new KeyInput());
-	  serial.scrollPane.setBounds(50,50,400,300);
+	  //                       位置　　横幅　縦幅
+	  serial.scrollPane.setBounds(50,50,550,300);
 	  cp.add(serial.scrollPane);
 
 	  //============================================================================
@@ -73,28 +75,38 @@ public class MainFrame extends JFrame {
 	  cp.add(bt1);
 	  bt1.setBounds(50,400,150,40);
 
-	  JButton bt2 = new JButton(new close_action());
-	  cp.add(bt2);
-	  bt2.setBounds(300,400,150,40);
-
-	  // クラウド操作のテスト用
-	  JButton bt_upd = new JButton(new update_action());
-	  cp.add(bt_upd);
-	  bt_upd.setBounds(50,500,150,40);
-
 	  // 学習器との通信用ボタン
 	  JButton bt_forest = new JButton(new forest_action());
 	  cp.add(bt_forest);
-	  bt_forest.setBounds(300,500,150,40);
+	  bt_forest.setBounds(250,400,150,40);
+
+
+	  JButton bt2 = new JButton(new close_action());
+	  cp.add(bt2);
+	  bt2.setBounds(450,400,150,40);
+
+	  // クラウド操作のテスト用　（現在は不要）
+//	  JButton bt_upd = new JButton(new update_action());
+//	  cp.add(bt_upd);
+//	  bt_upd.setBounds(50,500,150,40);
+
 
 	  //============================================================================
 	  //ログレベルのためのコンボボックス
 	  JLabel log_label = new JLabel("ログレベル：");
 	  cp.add(log_label);
-	  log_label.setBounds(50,600,100,20);
+	  log_label.setBounds(50,500,100,20);
 	  cp.add(serial.log_combo);
-	  serial.log_combo.setBounds(350,600,80,20);
+	  serial.log_combo.setBounds(250,500,200,20);
 
+	  // タグの座標表示
+	  JScrollPane tsp = new JScrollPane(serial.table,JScrollPane.
+			  VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
+
+	  cp.add(tsp);
+	  //serial.table.setBounds(50,700, 100,100);
+	  // タグ座標　横位置　縦位置　横サイズ　縦サイズ
+	  tsp.setBounds(50,550, 550,200);
 
 	  //ここまでがコンストラクタです。
 	 }
@@ -106,7 +118,7 @@ public class MainFrame extends JFrame {
 	  //COMポートを開く際の処理
 	  open_action()
 	  {
-	   putValue(Action.NAME,"接続");
+	   putValue(Action.NAME,"①接続");
 	  }
 
 	  public void actionPerformed(ActionEvent e)
@@ -136,7 +148,7 @@ public class MainFrame extends JFrame {
 	 {
 		 forest_action()
 		 {
-			 putValue(Action.NAME,"学習器との通信");
+			 putValue(Action.NAME,"②学習器との通信");
 		 }
 
 	  public void actionPerformed(ActionEvent e)

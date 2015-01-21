@@ -22,7 +22,9 @@ public class Serial_canvas {
 
 		  MainFrame frame = new MainFrame();
 		  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		  frame.setSize(500,500);
+
+		  // 初期サイズ
+		  frame.setSize(650,900);
 		  frame.setVisible(true);
 	}
 
