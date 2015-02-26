@@ -16,7 +16,7 @@ public class Serial_Base {
 	 SerialPort port;
 	 CommPortIdentifier comID;
 
-	 InputStream in;
+	 InputStream inSerial;
 	 OutputStream out;
 
 	 String comName;
@@ -59,7 +59,7 @@ public class Serial_Base {
 	    port.setFlowControlMode(SerialPort.FLOWCONTROL_NONE);
 
 	    //入出力ストリームの設定
-	    in = port.getInputStream();
+	    inSerial = port.getInputStream();
 	    out = port.getOutputStream();
 	   }
 	   catch(Exception e2)
@@ -88,7 +88,7 @@ public class Serial_Base {
 	   {
 	    //全部クローズ。
 	    port.close();
-	    in.close();
+	    inSerial.close();
 	    out.close();
 	   }
 	   catch(IOException e3)

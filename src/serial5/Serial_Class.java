@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Authenticator;
@@ -53,7 +54,8 @@ public class Serial_Class extends Serial_Base {
 
      Socket echoSocket = null;
      DataOutputStream os = null;
-     BufferedReader is = null;
+     BufferedReader isForest = null;  // 学習器用
+     InputStream inForest = null;  // 学習器用
 
      // ログ
      private static Logger logger = Logger.getGlobal();
@@ -223,7 +225,8 @@ public class Serial_Class extends Serial_Base {
 	      // クライアントからの要求を受けるソケットを開く
 	      try {
 	          clientSocket = echoServer.accept();
-	          is = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+	          inForest = clientSocket.getInputStream();
+	          isForest = new BufferedReader(new InputStreamReader( inForest)  );
 	       //   os = new PrintStream(clientSocket.getOutputStream());
 	             os = new DataOutputStream(clientSocket.getOutputStream());
 	      }   catch (IOException e) {
@@ -286,7 +289,7 @@ public class Serial_Class extends Serial_Base {
          // 開いたソケットなどをクローズ
 		 try {
 	         os.close();
-	         is.close();
+	         isForest.close();
 	         echoSocket.close();
 		 }catch (Exception e){
 			 	e.printStackTrace();
@@ -335,7 +338,10 @@ public class Serial_Class extends Serial_Base {
 			    {
 				     try
 				     {
-				    	 received_data = in.read();// 入力ストリームから読み込み（返却はint)
+				    	 int serialAvail = inSerial.available(); // 残りバイト
+
+
+				    	 received_data = inSerial.read();// 入力ストリームから読み込み（返却はint)
 
 
 				    	 try {
@@ -347,10 +353,13 @@ public class Serial_Class extends Serial_Base {
 				    	 if (iLoglevel == 2 ) {
 				    		 //logger.info
 				    		 try {
-					    		 System.out.println
+				    			 // シリアルから受け取ったデータを表示
+				    			 System.out.println
 					    		 ( "time=" + String.format("%013d", (long)(mt - start_mt) )
 					    		 		+ " first="+first_byte+ " mode="+output_mode +
-									 " ozvcnt="+String.format("%02d", ozvcnt) + " data=" + String.format("%02X", received_data)  );
+					    		 	" avail=" + serialAvail +
+									 " ozvcnt="+String.format("%02d", ozvcnt) +
+									 " data=" + String.format("%02X", received_data)  );
 				    		 } catch (Exception ex){
 				    			 ex.printStackTrace();
 				    		 }
@@ -699,7 +708,7 @@ public class Serial_Class extends Serial_Base {
 	                int starttx = 0; // 0開始前 1:開始後
 	                int endtx = 0; // 0終了前 1:終了後
 	                int txcount = 0; // 何バイト読んだか
-	                // サーバーからのメッセージを待つ
+	                // サーバー(学習器）からのメッセージを待つ
 	        		ByteArrayOutputStream ba = new ByteArrayOutputStream();
 
 
@@ -707,7 +716,15 @@ public class Serial_Class extends Serial_Base {
 
 	        		int iRecv = 0;
 	            	while (true){
-	                	iRecv = is.read();
+
+	            		int forestavail = inForest.available();
+
+	            	//	System.out.println("forest avaliable=" + forestsize);
+
+	            		// バイナリを受け取るならこちら
+	                	//iRecv = isForest.read(); // 0x80以上が全て→0xFDになる
+	                	iRecv = inForest.read(); // バイナリを受け取るならこっち
+
 	                	if ((char)iRecv == 0x02 && starttx == 0){
 	                		starttx = 1;
 	                		txcount++;
@@ -804,7 +821,9 @@ public class Serial_Class extends Serial_Base {
 	                		ba.write(iRecv);
 
 	                        System.out.println("Gateway count="+ txcount+
-	                        		" Data=" +String.format("%02X", iRecv) );
+	                        		" Data=" +String.format("%02X", iRecv) +
+	                        		" Data(FF)=" +String.format("%02X", iRecv & 0xFF)
+	                        		);
 
 	                	}
 	            	}
