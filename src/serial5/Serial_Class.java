@@ -868,7 +868,9 @@ public class Serial_Class extends Serial_Base {
 				// 参考　http://www.freeshow.net.cn/ja/questions/4fa9d3164d45f65ab16f8cd17c02e997105e5fb0988a7a4c5d4230976ba0c5ef/
 
 			 System.out.println("u2");
-			 url = new URL("http://ricohintern2014.appspot.com/posupdate");
+			 url = new URL("http://" + prop.getProperty("appspot") + ".appspot.com/posupdate");
+
+			 System.out.println("u2.1 url=" + url);
 
 			 // Proxy認証設定
 

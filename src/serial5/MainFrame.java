@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
@@ -14,6 +15,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -28,6 +30,8 @@ public class MainFrame extends JFrame {
 
 	Serial_Class serial;
 
+    // プロパティファイル
+    private static Properties propMain = new Properties();
 
 
 	 MainFrame()
@@ -36,6 +40,16 @@ public class MainFrame extends JFrame {
 	  super("serial-canvas");
 	  serial = new Serial_Class();
 
+
+		 //プロパティファイル読み込み処理
+
+		 try {
+			 propMain.loadFromXML(new FileInputStream("Gateway.xml"));
+		 } catch (IOException e ){
+			 System.err.println("Cannot open Gateway.xml");
+			 e.printStackTrace();
+		 }
+		 propMain.list(System.out);
 
 	  //============================================================================
 	  //コンテントペインを作成。
@@ -85,10 +99,10 @@ public class MainFrame extends JFrame {
 	  cp.add(bt2);
 	  bt2.setBounds(450,400,150,40);
 
-	  // クラウド操作のテスト用　（現在は不要）
-//	  JButton bt_upd = new JButton(new update_action());
-//	  cp.add(bt_upd);
-//	  bt_upd.setBounds(50,500,150,40);
+	  // クラウド操作のテスト用　（現在は不要）2016/7/6 テストで
+	  JButton bt_upd = new JButton(new update_action());
+	  cp.add(bt_upd);
+	  bt_upd.setBounds(50,500,150,40);
 
 
 	  //============================================================================
@@ -183,7 +197,9 @@ public class MainFrame extends JFrame {
 					// 参考　http://www.freeshow.net.cn/ja/questions/4fa9d3164d45f65ab16f8cd17c02e997105e5fb0988a7a4c5d4230976ba0c5ef/
 
 				 System.out.println("u2");
-				 url = new URL("http://ricohintern2014.appspot.com/posupdate");
+				 url = new URL("http://" + propMain.getProperty("appspot") + ".appspot.com/posupdate");
+
+				 System.out.println("u2.1 url=" + url);
 
 				 // Proxy認証設定
 				 ProxyAuthenticator pa = new ProxyAuthenticator("http://proxy.ricoh.co.jp:8080/", "z00s108018", "ken@1126");
